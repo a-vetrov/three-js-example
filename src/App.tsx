@@ -1,43 +1,52 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three'
+import Rubik from "./rubik";
+
+const addLights = (scene: THREE.Scene) => {
+    scene.add(new THREE.AmbientLight( 0xffffff, 0.2 ))
+
+    const light = new THREE.PointLight( 0xffffff, 1, 0 );
+    light.position.set( 0, 0, 100 );
+    scene.add(light);
+}
+
+const appendRenderer = (node:HTMLDivElement | null, renderer: HTMLCanvasElement) => {
+    if (node) {
+        while (node.firstChild) {
+            node.removeChild(node.lastChild as ChildNode)
+        }
+        node.appendChild(renderer)
+    }
+}
 
 function App() {
 
-    const domContainer = useRef<HTMLDivElement>(null);
+    const domContainer = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 )
 
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        if (domContainer.current) {
-            const oldCanvas = domContainer.current.querySelector('canvas')
-            if (oldCanvas) {
-                domContainer.current.removeChild(oldCanvas)
-            }
-            domContainer.current.appendChild(renderer.domElement);
+        const renderer = new THREE.WebGLRenderer()
+        renderer.setSize( 500, 500 )
+
+        appendRenderer(domContainer.current, renderer.domElement)
+
+        addLights(scene)
+
+        const rubik = new Rubik()
+        scene.add(rubik.mainGroup)
+
+        camera.position.z = 10
+
+        const animate = () => {
+            requestAnimationFrame( animate )
+
+            rubik.mainGroup.rotation.x += 0.01
+            rubik.mainGroup.rotation.y += 0.01
+
+            renderer.render( scene, camera )
         }
-
-        const light3 = new THREE.PointLight( 0xffffff, 1, 0 );
-        light3.position.set( 0, 0, 100 );
-        scene.add( light3 );
-
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshStandardMaterial( { color: 0xff0000 } );
-        const cube = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-
-        camera.position.z = 5;
-
-        const animate = function () {
-            requestAnimationFrame( animate );
-
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-
-            renderer.render( scene, camera );
-        };
 
         animate();
     }, [])
