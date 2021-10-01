@@ -1,6 +1,6 @@
-type ColorsDict = {
-    [key: string]: number
-}
+import {ColorsDict} from "./types";
+
+
 export const COLORS: ColorsDict = {
     RED: 0xff0000,
     BLUE: 0x0000ff,

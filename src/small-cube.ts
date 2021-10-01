@@ -1,21 +1,8 @@
 import * as THREE from "three";
 import {COLORS} from "./constants";
 import {getMaterial} from "./materials";
+import {CubeColors, Position} from "./types";
 
-interface CubeColors {
-    left?: number,
-    right?: number,
-    top?: number,
-    bottom?: number,
-    face?: number,
-    back?: number,
-}
-
-interface Position {
-    x: number,
-    y: number,
-    z: number
-}
 
 const getMaterialArray = (colors:CubeColors) => [
     getMaterial(colors.right || COLORS.BLACK),

@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from 'three'
 import Rubik from "./rubik";
 
 const addLights = (scene: THREE.Scene) => {
-    scene.add(new THREE.AmbientLight( 0xffffff, 0.2 ))
+    scene.add(new THREE.AmbientLight( 0xffffff, 1 ))
 
     const light = new THREE.PointLight( 0xffffff, 1, 0 );
-    light.position.set( 0, 0, 100 );
+    light.position.set( 0, 0, 0 );
     scene.add(light);
 }
 
@@ -39,11 +40,14 @@ function App() {
 
         camera.position.z = 10
 
+        const controls = new OrbitControls( camera, renderer.domElement );
+
         const animate = () => {
             requestAnimationFrame( animate )
 
-            rubik.mainGroup.rotation.x += 0.01
-            rubik.mainGroup.rotation.y += 0.01
+            //rubik.mainGroup.rotation.x += 0.01
+            //rubik.mainGroup.rotation.y += 0.01
+            controls.update();
 
             renderer.render( scene, camera )
         }
