@@ -1,4 +1,4 @@
-import {COLORS} from "./constants";
+import {COLORS} from "../constants";
 import * as THREE from "three";
 
 type MaterialsDict = {

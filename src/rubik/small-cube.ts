@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import {COLORS} from "./constants";
+import {COLORS} from "../constants";
 import {getMaterial} from "./materials";
-import {CubeColors, Position} from "./types";
+import {CubeColors, Position} from "../types";
 
 
 const getMaterialArray = (colors:CubeColors) => [

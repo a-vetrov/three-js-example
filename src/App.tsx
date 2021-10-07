@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import * as THREE from 'three'
-import Rubik from "./rubik";
+import Rubik from "./rubik/rubik";
 
 const addLights = (scene: THREE.Scene) => {
     scene.add(new THREE.AmbientLight( 0xffffff, 1 ))
@@ -35,19 +35,20 @@ function App() {
 
         addLights(scene)
 
-        const rubik = new Rubik()
+        const rubik = new Rubik(renderer.domElement, camera)
+        rubik.registerMouseEvents()
         scene.add(rubik.mainGroup)
 
         camera.position.z = 10
 
-        const controls = new OrbitControls( camera, renderer.domElement );
+        //const controls = new OrbitControls( camera, renderer.domElement );
 
         const animate = () => {
             requestAnimationFrame( animate )
 
-            //rubik.mainGroup.rotation.x += 0.01
-            //rubik.mainGroup.rotation.y += 0.01
-            controls.update();
+            rubik.mainGroup.rotation.x += 0.01
+            rubik.mainGroup.rotation.y += 0.01
+            //controls.update();
 
             renderer.render( scene, camera )
         }
